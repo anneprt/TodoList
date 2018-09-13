@@ -13,5 +13,5 @@ namespace TodoList
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
-    }
+    } 
 }
