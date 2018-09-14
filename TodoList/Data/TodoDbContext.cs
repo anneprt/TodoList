@@ -7,15 +7,15 @@ using TodoList.Models;
 
 namespace TodoList.Data
 {
-    public class TodoDbContext :DbContext
-    {
+	public class TodoDbContext : DbContext
+	{
 		public TodoDbContext() : base("TodoListConnectionString")
 		{
-			
+
 		}
 
 		public DbSet<Categorie> Categories { get; set; }
 
-    }
+	}
 
 }

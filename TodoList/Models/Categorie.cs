@@ -6,12 +6,12 @@ using System.Web;
 
 namespace TodoList.Models
 {
-    public class Categorie
-    {
-        public int ID { get; set; }
+	public class Categorie
+	{
+		public int ID { get; set; }
 
 		[Required]
 		[StringLength(20)]
-        public string Nom { get; set; }
-    }
+		public string Nom { get; set; }
+	}
 }
