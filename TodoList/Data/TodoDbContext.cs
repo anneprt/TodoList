@@ -11,6 +11,7 @@ namespace TodoList.Data
     {
 		public TodoDbContext() : base("TodoListConnectionString")
 		{
+			
 		}
 
 		public DbSet<Categorie> Categories { get; set; }
