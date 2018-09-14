@@ -104,6 +104,10 @@
     <Compile Include="Migrations\201809142117434_AjoutTache.Designer.cs">
       <DependentUpon>201809142117434_AjoutTache.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809142123303_ChgtTache.cs" />
+    <Compile Include="Migrations\201809142123303_ChgtTache.Designer.cs">
+      <DependentUpon>201809142123303_ChgtTache.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\Tache.cs" />
@@ -128,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809142117434_AjoutTache.resx">
       <DependentUpon>201809142117434_AjoutTache.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809142123303_ChgtTache.resx">
+      <DependentUpon>201809142123303_ChgtTache.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
