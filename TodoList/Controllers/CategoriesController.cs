@@ -9,69 +9,77 @@ using TodoList.Models;
 
 namespace TodoList.Controllers
 {
-	public class CategoriesController : ApiController
-	{
-		private TodoDbContext db = new TodoDbContext();
+    public class CategoriesController : ApiController
+    {
+        private TodoDbContext db = new TodoDbContext();
 
-		public IQueryable<Categorie> GetCategories()
-		{
-			return db.Categories.OrderBy(x => x.Nom);
-		}
+        public IQueryable<Categorie> GetCategories()
+        {
+            return db.Categories.OrderBy(x => x.Nom);
+        }
 
-		public IHttpActionResult PostCategories(Categorie categorie)
-		{
-			if (ModelState.IsValid)
-			{
-				db.Categories.Add(categorie);
-				db.SaveChanges();
+        public IHttpActionResult GetCategorie(int id)
+        {
+            var categorie = db.Categories.Find(id);
+            if (categorie == null)
+                return NotFound();
+            return Ok(categorie);
+        }
 
-				return Ok(categorie);
-			}
-			else
-				return BadRequest(ModelState);
+        public IHttpActionResult PostCategories(Categorie categorie)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Categories.Add(categorie);
+                db.SaveChanges();
 
-		}
-		public IHttpActionResult PutCategories(int id, Categorie categorie)
-		{
-			if (id != categorie.ID)
-			{
-				return BadRequest();
-			}
+                return Ok(categorie);
+            }
+            else
+                return BadRequest(ModelState);
 
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
+        }
+        public IHttpActionResult PutCategories(int id, Categorie categorie)
+        {
+            if (id != categorie.ID)
+            {
+                return BadRequest();
+            }
 
-			if (db.Categories.Count(x => x.ID == id) != 1)
-			{
-				return BadRequest();
-			}
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-			db.Entry(categorie).State = System.Data.Entity.EntityState.Modified;
-			db.SaveChanges();
+            if (db.Categories.Count(x => x.ID == id) != 1)
+            {
+                return BadRequest();
+            }
 
-			return StatusCode(HttpStatusCode.NoContent);
-		}
+            db.Entry(categorie).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
 
-		public IHttpActionResult DeleteCategories(int id)
-		{
-			var categorie = db.Categories.Find(id);
-			if (categorie ==null)
-			{
-				return NotFound();
-			}
+            return StatusCode(HttpStatusCode.NoContent);
+        }
 
-			db.Entry(categorie).State = System.Data.Entity.EntityState.Deleted;
-			db.SaveChanges();
+        public IHttpActionResult DeleteCategories(int id)
+        {
+            var categorie = db.Categories.Find(id);
+            if (categorie == null)
+            {
+                return NotFound();
+            }
 
-			return Ok(categorie);
-		}
+            db.Entry(categorie).State = System.Data.Entity.EntityState.Deleted;
+            db.SaveChanges();
 
-		protected override void Dispose(bool disposing)
-		{
-			base.Dispose(disposing);
-			db.Dispose();
-		}
-	}
+            return Ok(categorie);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            db.Dispose();
+        }
+    }
 }
