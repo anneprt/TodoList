@@ -10,7 +10,9 @@
 <body>
     <h1> ToDoList</h1>
 
-    <ul id="listeTaches"></ul>
+    <div id="listeTaches">
+
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <script>
@@ -20,18 +22,13 @@
                 success: function (taches) {
 
                     //Avec Jquery
-                    var ulListeTaches = $('#listeTaches');
+                    var divListeTaches = $('#listeTaches');
                     for (tache of taches) {
-                        var li = $('<li/>').text(tache.Nom);
-                        ulListeTaches.append(li);
-                    }
-
-                    //Sans Jquery
-                    var ulListeTaches1 = document.getElementById('listeTaches');
-                    for (tache of taches) {
-                        var li1 = document.createElement("li");
-                        li1.textContent = tache.Nom;
-                        ulListeTaches1.appendChild(li1);
+                        var divTache = $('<div> </div>');
+                        var inputEtat = $(' <input type="radio"></div>');
+                        divTache.append(inputEtat);
+                        divTache.append($('<span></span>').text(tache.Nom));
+                        divListeTaches.append(divTache);
                     }
 
                 },
