@@ -20,7 +20,7 @@ namespace TodoList.Models
 
 		public DateTime? DateFin { get; set; }
 
-        [Required]
+
         public bool Statut { get; set; }
 
 

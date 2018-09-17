@@ -14,7 +14,7 @@
         <form>
             <div class="form-group">
                 <label for="Nom">Nom</label>
-                <input type="text" class"form-control" id="nom" />
+                <input type="text" class"form-control" id="Nom" />
             </div>
 
             <div class="form-group">
@@ -23,7 +23,7 @@
             </div>
 
             <div class="form-group">
-                <label for="Categorie">Categorie</label>
+                <label for="Categorie">Catégorie</label>
                 <select class="form-control" id="Categorie" required></select>
             </div>
 
@@ -66,7 +66,7 @@
                     select.append($('<option></option>'));//élément vide
                     for (categorie of categories) {
                         var option = $('<option></option>');
-                        option.val('value', categorie.ID);
+                        option.val(categorie.ID);
                         option.text(categorie.Nom);
                         select.append(option);
                     }
