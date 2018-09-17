@@ -29,6 +29,9 @@
 <body>
     <div class="container">
         <h1> ToDoList</h1>
+        <div style="margin-bottom:25px;">
+            <a href="/HTML/tache.html" class="btn btn-primary btn-sm">Nouvelle tache</a>
+        </div>
 
         <div id="listeTaches"></div>
 
@@ -63,6 +66,7 @@
 
                         });
 
+                        //bouton delete-supprimer
                         var buttonDelete = $('<button class="btn btn-danger btn-sm">Delete</button>');
                         buttonDelete.on('click', function () {
                             var div = $(this).closest(".Tache");
@@ -73,6 +77,8 @@
                             ModifierStatutTache(idTache, this);
 
                         });
+                        //bouton ajouter
+                        var buttonAdd=$('<button class="btn btn-')
 
                         divTache.append(inputEtat);
                         divTache.append($('<label></label>').text(tache.Nom));
@@ -116,7 +122,8 @@
                     $(div).remove();
 
                     error: Erreur
-                });
+                }
+            });
 
         }
 
