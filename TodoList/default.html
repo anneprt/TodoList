@@ -12,14 +12,18 @@
             padding: 10px;
         }
 
-        .Tache input [type=checkbox] {
-            margin-right: 8px;
-        }
+            .Tache input [type=checkbox] {
+                margin-right: 8px;
+            }
 
-        .Tache button {
-            float: right;
-        }
+            .Tache button {
+                float: right;
+                display: none;
+            }
 
+            .Tache:hover button {
+                display: block;
+            }
     </style>
 </head>
 <body>
@@ -38,6 +42,7 @@
 
                     //Avec Jquery
                     var divListeTaches = $('#listeTaches');
+                    divListeTaches.empty();
                     for (tache of taches) {
                         var divTache = $('<div class="Tache alert"> </div>');
                         divTache.attr("data-id", tache.ID);// pour ecrire la valeur
@@ -53,12 +58,12 @@
                         inputEtat.on('click', function () {
                             var div = $(this).closest(".Tache");
                             var idTache = div.attr("data-id");//pour prendre la valeur
-                            
+
                             ModifierStatutTache(idTache, this);
 
                         });
 
-                        var buttonDelete= $('<button class="btn btn-danger btn-sm">Delete</button>');
+                        var buttonDelete = $('<button class="btn btn-danger btn-sm">Delete</button>');
                         buttonDelete.on('click', function () {
                             var div = $(this).closest(".Tache");
                             var idTache = div.attr("data-id");
@@ -101,6 +106,18 @@
 
                 error: Erreur
             })
+        }
+
+        function Supprimer(idTache, div) {
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/taches/' + id,
+                success: function () {
+                    $(div).remove();
+
+                    error: Erreur
+                });
+
         }
 
         getTaches();
