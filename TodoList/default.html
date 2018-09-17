@@ -32,13 +32,27 @@
                     }
 
                 },
-                error: function () {
-                    alert("coucou");
-                }
-            })
+                error: Erreur
+
+            });
+            function Erreur() {
+                alert("Erreur !");
+            }
 
         }
+        function ModifierStatutTache(id, statut) {
+            $.ajax({
+                mode: 'PUT',
+                url: 'http://localhost:58018/api/tachestatut' + id
+                    + '?statut=' + statut,
+                success: function () {
+                },
+
+                error: Erreur
+            })
+        }
         getTaches();
+
     </script>
 </body>
 </html>

@@ -73,18 +73,19 @@ namespace TodoList.Controllers
 
         [ResponseType(typeof(void))]
         [HttpPut]
-        [Route("api/TachesStatut")]
+        [Route("api/TachesStatut/{id}")]
         public IHttpActionResult PutTacheStatut(int id, bool statut)
         {
             Tache tache = db.Taches.Find(id);
+
             if (tache==null)
             {
                 return NotFound();
             }
             tache.Statut = statut;
+
             db.SaveChanges();
 
-            db.Entry(tache).State = EntityState.Modified;
             return StatusCode(HttpStatusCode.NoContent);
         }
 
