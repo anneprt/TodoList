@@ -14,7 +14,7 @@
         <form>
             <div class="form-group">
                 <label for="Nom">Nom</label>
-                <input type="text" class"form-control" id="nom" />"
+                <input type="text" class"form-control" id="nom" />
             </div>
 
             <div class="form-group">
@@ -32,6 +32,21 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <script>
+        function Enregistrer() {
+            var form = $('form');
+            $.ajax({
+                type: 'POST',
+                url: '/api/taches',
+
+                success: function () {
+
+                },
+                error: function () {
+                    alert('Ah là je crois que ça va pas être possible...')
+                }
+            })
+        }
+
         function LoadCategories() {
             $.ajax({
                 url: '/api/categories',
@@ -48,6 +63,8 @@
                 }
             })
         }
+        LoadCategories();
+
     </script>
 </body>
 </html>
