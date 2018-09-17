@@ -25,7 +25,19 @@
                     var divListeTaches = $('#listeTaches');
                     for (tache of taches) {
                         var divTache = $('<div class="Tache"> </div>');
-                        var inputEtat = $(' <input type="radio" id="id">');
+                        divTache.data("id", tache.ID);
+
+                        var inputEtat = $(' <input type="radio" >');
+                        inputEtat.attr('checked', tache.Statut);
+
+                        //Appeler le serveur quand on clique dessus
+                        inputEtat.on('click', function () {
+                            var div = $(this).closest(".Tache");
+                            var idTache = div.data("id");
+                            ModifierStatutTache(idTache, this.checked);
+
+                        });
+
                         divTache.append(inputEtat);
                         divTache.append($('<label></label>').text(tache.Nom));
                         divListeTaches.append(divTache);
@@ -35,15 +47,17 @@
                 error: Erreur
 
             });
+
+        }
             function Erreur() {
                 alert("Erreur !");
             }
 
-        }
+       
         function ModifierStatutTache(id, statut) {
             $.ajax({
-                mode: 'PUT',
-                url: 'http://localhost:58018/api/tachestatut' + id
+                type: 'PUT',
+                url: 'http://localhost:58018/api/tachesStatut/' + id
                     + '?statut=' + statut,
                 success: function () {
                 },
@@ -51,6 +65,7 @@
                 error: Erreur
             })
         }
+
         getTaches();
 
     </script>
