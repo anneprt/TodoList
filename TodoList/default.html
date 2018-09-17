@@ -24,10 +24,10 @@
                     //Avec Jquery
                     var divListeTaches = $('#listeTaches');
                     for (tache of taches) {
-                        var divTache = $('<div> </div>');
-                        var inputEtat = $(' <input type="radio"></div>');
+                        var divTache = $('<div class="Tache"> </div>');
+                        var inputEtat = $(' <input type="radio" id="id">');
                         divTache.append(inputEtat);
-                        divTache.append($('<span></span>').text(tache.Nom));
+                        divTache.append($('<label></label>').text(tache.Nom));
                         divListeTaches.append(divTache);
                     }
 
