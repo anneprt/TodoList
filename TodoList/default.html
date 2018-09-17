@@ -6,14 +6,29 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
+    <style>
+        .Tache {
+            border: solid 1px lightgray;
+            padding: 10px;
+        }
+
+        .Tache input [type=checkbox] {
+            margin-right: 8px;
+        }
+
+        .Tache button {
+            float: right;
+        }
+
+    </style>
 </head>
 <body>
-    <h1> ToDoList</h1>
+    <div class="container">
+        <h1> ToDoList</h1>
 
-    <div id="listeTaches">
+        <div id="listeTaches"></div>
 
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <script>
         function getTaches() {
@@ -24,23 +39,40 @@
                     //Avec Jquery
                     var divListeTaches = $('#listeTaches');
                     for (tache of taches) {
-                        var divTache = $('<div class="Tache"> </div>');
-                        divTache.data("id", tache.ID);
+                        var divTache = $('<div class="Tache alert"> </div>');
+                        divTache.attr("data-id", tache.ID);// pour ecrire la valeur
 
-                        var inputEtat = $(' <input type="radio" >');
+                        if (tache.Statut) {
+                            divTache.addClass('alert-success');
+                        }
+
+                        var inputEtat = $(' <input type="checkbox" >');
                         inputEtat.attr('checked', tache.Statut);
 
                         //Appeler le serveur quand on clique dessus
                         inputEtat.on('click', function () {
                             var div = $(this).closest(".Tache");
-                            var idTache = div.data("id");
-                            ModifierStatutTache(idTache, this.checked);
+                            var idTache = div.attr("data-id");//pour prendre la valeur
+                            
+                            ModifierStatutTache(idTache, this);
+
+                        });
+
+                        var buttonDelete= $('<button class="btn btn-danger btn-sm">Delete</button>');
+                        buttonDelete.on('click', function () {
+                            var div = $(this).closest(".Tache");
+                            var idTache = div.attr("data-id");
+                            Supprimer(idTache, div);
+
+
+                            ModifierStatutTache(idTache, this);
 
                         });
 
                         divTache.append(inputEtat);
                         divTache.append($('<label></label>').text(tache.Nom));
                         divListeTaches.append(divTache);
+                        divTache.append(buttonDelete);
                     }
 
                 },
@@ -49,17 +81,22 @@
             });
 
         }
-            function Erreur() {
-                alert("Erreur !");
-            }
+        function Erreur() {
+            alert("Erreur !");
+        }
 
-       
-        function ModifierStatutTache(id, statut) {
+
+        function ModifierStatutTache(id, input) {
             $.ajax({
                 type: 'PUT',
-                url: '/api/tachesStatut/' + id
-                    + '?statut=' + statut,
+                url: '/api/tachesStatut/' + id + '?statut=' + input.checked,
                 success: function () {
+                    var divTache = $(input).closest(".Tache");
+                    if (input.checked) {
+                        divTache.addClass('alert-success');
+                    } else {
+                        divTache.removeClass('alert-success')
+                    }
                 },
 
                 error: Erreur
