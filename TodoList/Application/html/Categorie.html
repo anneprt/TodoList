@@ -7,6 +7,8 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
     <link rel="stylesheet" href="/Application/css/application.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+          crossorigin="anonymous">
     <style>
 
         .Categorie {
@@ -26,7 +28,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-dark bg-info">
-        <a class="navbar-brand" href="/">ToDoList</a>
+        <a class="navbar-brand" href="/"><i class="fas fa-check-double"></i> ToDoList</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
@@ -42,10 +44,10 @@
     <div class="container-fluid">
         <div id="ListeCategories">
         </div>
-        <div>
-            <input type="text" id="Nom" />
-            <button class="btn btn-primary"
-                    onclick="Ajouter()">
+
+        <div class="alert alert-secondary" style="margin-top: 15px">
+            <input type="text" id="Nom" placeholder="Nouvelle catégorie" />
+            <button class="btn btn-primary" onclick="Ajouter()">
                 Ajouter
             </button>
         </div>
@@ -63,17 +65,7 @@
                     divListeCategories.empty();
                     for (var categorie of categories) {
                         var divCategorie = $('<div class="Categorie"></div>');
-                        divCategorie.data('id', categorie.ID);
-                        divCategorie.append($('<span></span>').text(categorie.Nom));
-
-                        var boutonSupprimer = $('<button class="btn btn-danger btn-sm">Supprimer</button>');
-                        boutonSupprimer.on('click', function () {
-                            var idCategorie = $(this).closest('.Categorie').data('id');
-                            Supprimer(idCategorie);
-                        });
-
-                        divCategorie.append(boutonSupprimer);
-
+                        
                         divListeCategories.append(divCategorie);
 
                         var boutonModifier = $('<button class="btn btn-primary btn-sm">Modifier</button>');
@@ -89,12 +81,29 @@
             });
         }
 
+        function RemplirDivCategorie(divCategorie, categorie) {
+            divCategorie.empty();
+            divCategorie.data('id', categorie.ID);
+            divCategorie.append($('<span></span>').text(categorie.Nom));
+            var boutonSupprimer = $('<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>');
+            boutonSupprimer.on('click', function () {
+                var idCategorie = $(this).closest('.Categorie').data('id');
+                Supprimer(idCategorie);
+            });
+            divCategorie.append(boutonSupprimer);
+            var boutonModifier = $('<button class="btn btn-primary btn-sm"><i class="fas fa-pen"></i></button>');
+            boutonModifier.on('click', function () {
+                Modifier($(this));
+            });
+            divCategorie.append(boutonModifier);
+        }
+
         function Modifier(bouton) {
             var div = bouton.closest('.Categorie');
 
             var span = div.find('span');
             var nom = span.text();
-            div.data('nom', nom);
+            div.data('nom', nom);//je stocke le nom dans le div en cas d'annulation
 
             div.empty();
 
@@ -103,8 +112,16 @@
             input.focus();
             input.select();
             input.on('keyup', function (event) {
-                var divCategorie
-            })
+                var divCategorie = $(this).closest('.Categorie');
+                switch (event.which) {
+                    case 13:/*ENTER*/
+                        EnregistrerModification(divCategorie);
+                        break;
+                    case 27:/*ESCAPE*/
+                        AnnulerModification(divCategorie);
+                        break;
+                }
+            });
 
             var boutonAnnuler = $('< button class= "btn btn-primary btn-sm" > Modifier</button >');
             boutonAnnuler.on('click', function () {
@@ -168,6 +185,26 @@
             });
 
         }
+        function AnnulerModification(divCategorie) {
+            let idCategorie = divCategorie.data('id');
+            let nomCategorie = divCategorie.data('nom'); // nom que j'avais stocké plus haut
+            RemplirDivCategorie(divCategorie, { ID: idCategorie, Nom: nomCategorie });
+        }
+        function EnregistrerModification(divCategorie) {
+            let idCategorie = divCategorie.data('id');
+            let nomCategorie = divCategorie.find('input').val();
+            $.ajax({
+                type: 'PUT',
+                url: '/api/categories/' + idCategorie,
+                data: {
+                    ID: idCategorie,
+                    nom: nomCategorie
+                },
+                success: function () {
+                    RemplirDivCategorie(divCategorie, { ID: idCategorie, Nom: nomCategorie });
+                }
+            });
+        }
 
         //pour attendre que le nav charge la page avant de lancer la fonction
         $(document).ready(function () {
@@ -175,7 +212,7 @@
             $('#Nom').focus();
 
         })
- 
+
     </script>
 </body>
 </html>
