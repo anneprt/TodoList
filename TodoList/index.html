@@ -30,14 +30,17 @@
     <div class="container">
         <h1> ToDoList</h1>
         <div style="margin-bottom:25px;">
-            <a href="/HTML/tache.html" class="btn btn-primary btn-sm">Nouvelle tache</a>
+            <a href="/HTML/Tache.html" class="btn btn-primary btn-sm">Nouvelle tache</a>
+            <a href="/HTML/Categorie.html" class="btn btn-secondary btn-sm">Liste des catégories</a>
         </div>
 
         <div id="listeTaches"></div>
 
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <script>
+
         function getTaches() {
             $.ajax({
                 url: '/api/taches',
@@ -77,7 +80,7 @@
                             ModifierStatutTache(idTache, this);
 
                         });
-                     
+
 
                         divTache.append(inputEtat);
                         divTache.append($('<label></label>').text(tache.Nom));
