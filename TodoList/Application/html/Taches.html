@@ -7,6 +7,7 @@
           crossorigin="anonymous" />
     <link rel="stylesheet" href="/Application/css/bootstrap-alert.min.css" />
     <link rel="stylesheet" href="/Application/css/application.css" />
+    <script src="/Application/js/application.js"></script>
 
 
     <style>
@@ -71,51 +72,51 @@
     <script>
 
         function getTaches() {
+            var divListeTaches = $('#listeTaches');
+            setLoader(divListeTaches);
             $.ajax({
                 url: '/api/taches',
                 success: function (taches) {
-                    var divListeTaches = $('#listeTaches');
                     divListeTaches.empty();
-
-                    for (tache of taches) {
-                        var divTache = $('<div class="Tache alert"></div>');
-                        divTache.attr("data-id", tache.ID);
-
-                        if (tache.Statut) {
-                            divTache.addClass('alert-success');
-                        }
-
-                        var inputEtat = $('<input type="checkbox">');
-                        inputEtat.attr('checked', tache.Statut);
-                        inputEtat.on('click', function () {
-                            var div = $(this).closest(".Tache");
-                            var idTache = div.attr("data-id");
-                            ModifierStatutTache(idTache, this);
-                        });
-
-                        var buttonDelete = $('<button class="btn btn-danger btn-sm">Delete</button>');
-                        buttonDelete.on('click', function () {
-                            //Affichage d'une confirmation
-                            $.bsAlert.confirmTitle = 'Suppression';
-                            $.bsAlert.closeDisplay = 'Non';
-                            $.bsAlert.sureDisplay = 'Oui';
-                            $.bsAlert.confirm("Es-tu sûr?", () => {
+                    if (taches.length > 0) {
+                        for (tache of taches) {
+                            var divTache = $('<div class="Tache alert"></div>');
+                            divTache.attr("data-id", tache.ID);
+                            if (tache.Statut) {
+                                divTache.addClass('alert-success');
+                            }
+                            var inputEtat = $('<input type="checkbox">');
+                            inputEtat.attr('checked', tache.Statut);
+                            inputEtat.on('click', function () {
                                 var div = $(this).closest(".Tache");
                                 var idTache = div.attr("data-id");
-                                SupprimerTache(idTache, div);
+                                ModifierStatutTache(idTache, this);
                             });
-                        });
-
-                        divTache.append(inputEtat);
-                        divTache.append($('<label></label>').text(tache.Nom));
-                        divTache.append(buttonDelete);
-
-                        divListeTaches.append(divTache);
+                            var buttonDelete = $('<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>');
+                            buttonDelete.on('click', function () {
+                                // Affichage d'une confirmation
+                                $.bsAlert.confirmTitle = 'Suppression';
+                                $.bsAlert.closeDisplay = 'Non';
+                                $.bsAlert.sureDisplay = 'Oui';
+                                $.bsAlert.confirm("Es-tu sûr?", () => {
+                                    var div = $(this).closest(".Tache");
+                                    var idTache = div.attr("data-id");
+                                    SupprimerTache(idTache, div);
+                                });
+                            });
+                            divTache.append(inputEtat);
+                            divTache.append($('<label></label>').text(tache.Nom));
+                            divTache.append(buttonDelete);
+                            divListeTaches.append(divTache);
+                        }
+                    } else {
+                        divListeTaches.append($('<p class="lead">Aucune tache pour le moment...</p>'));
                     }
                 },
-                error: Erreur  
-                });
+                error: Erreur
+            });
         }
+
         function ModifierStatutTache(id, input) {
             $.ajax({
                 type: 'PUT',
@@ -145,6 +146,7 @@
             alert("Erreur !");
         }
         $(document).ready(getTaches);
+
     </script>
 
 </body>

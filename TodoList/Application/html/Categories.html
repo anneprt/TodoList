@@ -57,10 +57,13 @@
     <script>
 
         function LoadCategories() {
+            var divListeCategories = $('#listeCategories');
+            setLoader(divListeCategories);
+
             $.ajax({
                 url: '/api/categories/',
                 success: function (categories) {
-                    var divListeCategories = $('#ListeCategories');
+                  
 
                     divListeCategories.empty();
 

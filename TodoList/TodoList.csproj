@@ -97,9 +97,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Application\css\Application.css" />
-    <Content Include="Application\html\Categorie.html" />
+    <Content Include="Application\html\Categories.html" />
     <Content Include="Application\html\Tache.html" />
     <Content Include="Application\html\Taches.html" />
+    <Content Include="Application\js\application.js" />
     <Content Include="index.html" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />

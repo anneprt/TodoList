@@ -89,21 +89,27 @@
             let tache = {
                 Nom: $('#Nom').val(),
                 Description: $('#Description').val(),
-                CategorieID: $('#Categorie').val()
+                CategorieID: $('#Categorie').val(),
+                DateFin: $('#DateFin').val(),
+                Priorite: $('[name=Priorite]:checked').val()
             };
+          
             $.ajax({
                 type: 'POST',
                 url: '/api/taches',
                 data: tache,
                 success: function () {
-                    window.location.href = '/index.html';
+                    $('form')[0].reset();
+                    $('form').removeClass('was-validated');
+                    //window.location.href = '/index.html';
                 },
                 error: function () {
                     alert('On va tous mourir !!');
                 }
             });
             return false;
-        }
+        };
+
         function LoadCategories() {
             $.ajax({
                 url: '/api/categories',
@@ -111,6 +117,7 @@
                     var select = $("#Categorie");
                     select.empty();
                     select.append($('<option></option>')); // élément vide
+
                     for (categorie of categories) {
                         var option = $('<option></option>');
                         option.val(categorie.ID);
@@ -125,6 +132,7 @@
 
             ; // Sans jquery: document.getElementById('Nom').focus();
         });
+
     </script>
 </body>
 </html>
