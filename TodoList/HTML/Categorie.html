@@ -7,26 +7,53 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
 
+    <style>
+
+        .Categorie {
+            border: solid 1px lightgray;
+            padding: 10px;
+        }
+
+            .Categorie button {
+                float: right;
+                display: none;
+            }
+
+            .Categorie:hover button {
+                display: block;
+            }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Catégories</h1>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-info">
+        <a class="navbar-brand" href="/">ToDoList</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Taches</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" disabled>Catégories <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-        <form>
-            <div class="form-group">
-                <label for="Nom">Nom de la nouvelle catégorie</label>
-                <input type="text" class"form-control" id="Categorie" />
-            </div>
-
-            <button class="btn btn-primary" onclick="Enregistrer()">Enregistrer</button>
-        </form>
-    </div>
-    <div>
-
+    <div class="container-fluid">
+        <div id="listeCategories">
+        </div>
+        <div>
+            <input type="text" id="Nom" />
+            <button class="btn btn-primary"
+                    onclick="Ajouter()">
+                Ajouter
+            </button>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <script>
+
         function LoadCategories() {
             $.ajax({
                 url: '/api/categories',
@@ -36,19 +63,49 @@
                     divListeCategories.empty();
                     for (var categorie of categories) {
                         var divCategorie = $('<div class="Categorie"></div>');
-                        divCategorie.append($('<span></span>').text
+                        divCategorie.append($('<span></span>').text(categorie.Nom));
+
+                        var boutonSupprimer = $('<button class="btn btn-danger btn-sm">Supprimer</button>');
+                        boutonSupprimer.on('click', function () {
+                            var idCategorie = $(this).closest('.Categorie').data('id');
+                            Supprimer(idCategorie);
+                        });
+
+                        divCategorie.append(boutonSupprimer);
+
+                        divListeCategories.append(divCategorie);
+
                     }
                 }
 
-            })
+            });
         }
 
         function Ajouter() {
             $.ajax({
-                type: 'POST'
+                type: 'POST',
+                url: '/api/categories',
+                data: {
+                    Nom: $('#Nom').val('')
+                }
 
-            })
+            });
         }
+
+        function Supprimer(idCategorie) {
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/categories/' + idCategorie,
+                success: function () {
+                    LoadCategories();
+                },
+                error: function () {
+                    alert('Impossible de supprimer.Peut-être la catégorie est liée à une tache?');
+                }
+            });
+
+        }
+
         $(document).ready(function () {
             $('#Nom').focus();
         })
@@ -77,47 +134,7 @@
             return false;
         }
 
-        function getCategories() {
-            $.ajax({
-                url: '/api/categories',
-                success: function (categories) {
 
-                    //Avec Jquery
-                    var divListeCategories = $('#listeCategories');
-                    divListeCategories.empty();
-                    for (categorie of categories) {
-                        var divCategorie = $('<div class="Categorie alert"> </div>');
-                        divCategorie.attr("data-id", categorie.ID);// pour ecrire la valeur
-
-                        if (categorie.Statut) {
-                            divCategorie.addClass('alert-success');
-                        }
-
-                        //bouton delete-supprimer
-                        var buttonDelete = $('<button class="btn btn-danger btn-sm">Delete</button>');
-                        buttonDelete.on('click', function () {
-                            var div = $(this).closest(".Categorie");
-                            var idCategorie = div.attr("data-id");
-                            Supprimer(idCategorie, div);
-
-                        });
-                       
-                        idCategorie.append($('<label></label>').text(categorie.Nom));
-                        divListeCategories.append(divCategorie);
-                        idCategorie.append(buttonDelete);
-                    }
-
-                },
-                error: Erreur
-
-            });
-
-        }
-        function Erreur() {
-            alert("Erreur !");
-        }
-
-        getCategories();
 
 
     </script>
