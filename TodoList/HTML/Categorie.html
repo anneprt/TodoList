@@ -21,9 +21,37 @@
             <button class="btn btn-primary" onclick="Enregistrer()">Enregistrer</button>
         </form>
     </div>
+    <div>
+
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <script>
+        function LoadCategories() {
+            $.ajax({
+                url: '/api/categories',
+                success: function (categories) {
+                    var divListeCategories = $('#ListeCategories');
+
+                    divListeCategories.empty();
+                    for (var categorie of categories) {
+                        var divCategorie = $('<div class="Categorie"></div>');
+                        divCategorie.append($('<span></span>').text
+                    }
+                }
+
+            })
+        }
+
+        function Ajouter() {
+            $.ajax({
+                type: 'POST'
+
+            })
+        }
+        $(document).ready(function () {
+            $('#Nom').focus();
+        })
 
         function Enregistrer() {
             var tache = {
@@ -65,9 +93,6 @@
                             divCategorie.addClass('alert-success');
                         }
 
-
-              
-
                         //bouton delete-supprimer
                         var buttonDelete = $('<button class="btn btn-danger btn-sm">Delete</button>');
                         buttonDelete.on('click', function () {
@@ -75,12 +100,7 @@
                             var idCategorie = div.attr("data-id");
                             Supprimer(idCategorie, div);
 
-
-                          
-
                         });
-
-
                        
                         idCategorie.append($('<label></label>').text(categorie.Nom));
                         divListeCategories.append(divCategorie);

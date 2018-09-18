@@ -129,7 +129,9 @@
 
         }
 
-        getTaches();
+       
+        //pour attendre que le nav charge la page ET après appelle la méthode(quand le document qui correspond à la page est pret alors on peut executer )
+        $(document).ready(getTaches);
 
     </script>
 </body>

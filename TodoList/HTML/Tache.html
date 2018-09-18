@@ -65,7 +65,14 @@
                 }
             })
         }
-        LoadCategories();
+        $(document).ready(function () {
+            LoadCategories();
+            //sans JQuery
+            //document.getElementById('Nom').focus;
+
+            $('#Nom').focus();//JQuery pour focus sur premier champ
+        });
+      
 
     </script>
 </body>
