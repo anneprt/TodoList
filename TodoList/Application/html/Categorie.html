@@ -63,17 +63,12 @@
                     var divListeCategories = $('#ListeCategories');
 
                     divListeCategories.empty();
+
                     for (var categorie of categories) {
                         var divCategorie = $('<div class="Categorie"></div>');
-                        
+                        RemplirDivCategorie(divCategorie, categorie);
                         divListeCategories.append(divCategorie);
 
-                        var boutonModifier = $('<button class="btn btn-primary btn-sm">Modifier</button>');
-                        boutonModifier.on('click', function () {
-                            Modifier($(this));
-                        });
-
-                        divCategorie.append(boutonModifier);
 
                     }
                 }
@@ -85,12 +80,14 @@
             divCategorie.empty();
             divCategorie.data('id', categorie.ID);
             divCategorie.append($('<span></span>').text(categorie.Nom));
+
             var boutonSupprimer = $('<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>');
             boutonSupprimer.on('click', function () {
                 var idCategorie = $(this).closest('.Categorie').data('id');
                 Supprimer(idCategorie);
             });
             divCategorie.append(boutonSupprimer);
+
             var boutonModifier = $('<button class="btn btn-primary btn-sm"><i class="fas fa-pen"></i></button>');
             boutonModifier.on('click', function () {
                 Modifier($(this));
@@ -137,27 +134,13 @@
 
             var boutonEnregistrer = $('< button class= "btn btn-primary btn-sm" > Modifier</button >');
             boutonEnregistrer.on('click', function () {
-                let divCategorie = $(this).closest('.Categorie');
-                let idCategorie = divCategorie.data('id');
-                let nomCategorie = divCategorie.find('input').val();
+                EnregistrerModification($(this).closest('.Categorie'));
             })
 
-            $.ajax({
-                type: 'PUT',
-                url: '/api/categories/' + idCategorie,
-                data: {
-                    ID: idcategorie,
-                    nom: nomCategorie
-                },
-                success: function () {
-                    RemplirDivCategorie(divCategorie, {
-                        ID: idCategorie,
-                        Nom: nomCategorie
-                    })
-                }
-            })
+            div.append(boutonEnregistrer);
 
         }
+
         function Ajouter() {
             $.ajax({
                 type: 'POST',
@@ -190,9 +173,11 @@
             let nomCategorie = divCategorie.data('nom'); // nom que j'avais stocké plus haut
             RemplirDivCategorie(divCategorie, { ID: idCategorie, Nom: nomCategorie });
         }
+
         function EnregistrerModification(divCategorie) {
             let idCategorie = divCategorie.data('id');
             let nomCategorie = divCategorie.find('input').val();
+
             $.ajax({
                 type: 'PUT',
                 url: '/api/categories/' + idCategorie,

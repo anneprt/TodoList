@@ -120,8 +120,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Application\js\bootstrap-alert.min" />
-    <Content Include="Application\css\bootstrap-alert.min" />
+    <Content Include="Application\js\bootstrap-alert.min.js" />
+    <Content Include="Application\css\bootstrap-alert.min.css" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
