@@ -28,9 +28,30 @@
 
         <form novalidate>
             <div class="form-group">
-                <label for="Nom">Nom</label>
+                <label for="Nom">Nom*</label>
                 <input type="text" class="form-control" id="Nom" required />
                 <div class="invalid-feedback"> Champ requis !</div>
+            </div>
+
+            <div class="form-group">
+                <label for="DateFin">Date de fin</label>
+                <input type="date" class="form-control" id="DateFin" />
+            </div>
+
+            <div class="form-group">
+                <label style="display: block;">Priorité</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Priorite" id="Priorite_Haute" value="1">
+                    <label class="form-check-label" for="Priorite_Haute">Haute</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Priorite" id="Priorite_Moyenne" value="2">
+                    <label class="form-check-label" for="Priorite_Moyenne">Moyenne</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Priorite" id="Priorite_Basse" value="3">
+                    <label class="form-check-label" for="Priorite_Basse">Basse</label>
+                </div>
             </div>
 
             <div class="form-group">
