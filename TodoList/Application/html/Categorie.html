@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
-
+    <link rel="stylesheet" href="/Application/css/application.css" />
     <style>
 
         .Categorie {
@@ -40,7 +40,7 @@
     </nav>
 
     <div class="container-fluid">
-        <div id="listeCategories">
+        <div id="ListeCategories">
         </div>
         <div>
             <input type="text" id="Nom" />
@@ -56,13 +56,14 @@
 
         function LoadCategories() {
             $.ajax({
-                url: '/api/categories',
+                url: '/api/categories/',
                 success: function (categories) {
                     var divListeCategories = $('#ListeCategories');
 
                     divListeCategories.empty();
                     for (var categorie of categories) {
                         var divCategorie = $('<div class="Categorie"></div>');
+                        divCategorie.data('id', categorie.ID);
                         divCategorie.append($('<span></span>').text(categorie.Nom));
 
                         var boutonSupprimer = $('<button class="btn btn-danger btn-sm">Supprimer</button>');
@@ -75,20 +76,85 @@
 
                         divListeCategories.append(divCategorie);
 
+                        var boutonModifier = $('<button class="btn btn-primary btn-sm">Modifier</button>');
+                        boutonModifier.on('click', function () {
+                            Modifier($(this));
+                        });
+
+                        divCategorie.append(boutonModifier);
+
                     }
                 }
 
             });
         }
 
+        function Modifier(bouton) {
+            var div = bouton.closest('.Categorie');
+
+            var span = div.find('span');
+            var nom = span.text();
+            div.data('nom', nom);
+
+            div.empty();
+
+            var input = $('<input type="text"/>').val(span.text());
+            div.append(input);
+            input.focus();
+            input.select();
+            input.on('keyup', function (event) {
+                var divCategorie
+            })
+
+            var boutonAnnuler = $('< button class= "btn btn-primary btn-sm" > Modifier</button >');
+            boutonAnnuler.on('click', function () {
+                let divCategorie = $(this).closest('.Categorie');
+                let idCategorie = divCategorie.data('id');
+                let nomCategorie = divCategorie.data('nom');//nom que j'avais stocké plus haut
+                RemplirDivCategorie(divCategorie, {
+                    ID: idCategorie,
+                    Nom: nomCategorie
+                });
+            });
+            div.append(boutonAnnuler);
+
+            var boutonEnregistrer = $('< button class= "btn btn-primary btn-sm" > Modifier</button >');
+            boutonEnregistrer.on('click', function () {
+                let divCategorie = $(this).closest('.Categorie');
+                let idCategorie = divCategorie.data('id');
+                let nomCategorie = divCategorie.find('input').val();
+            })
+
+            $.ajax({
+                type: 'PUT',
+                url: '/api/categories/' + idCategorie,
+                data: {
+                    ID: idcategorie,
+                    nom: nomCategorie
+                },
+                success: function () {
+                    RemplirDivCategorie(divCategorie, {
+                        ID: idCategorie,
+                        Nom: nomCategorie
+                    })
+                }
+            })
+
+
+
+
+        }
         function Ajouter() {
             $.ajax({
                 type: 'POST',
-                url: '/api/categories',
+                url: '/api/categories/',
                 data: {
-                    Nom: $('#Nom').val('')
+                    Nom: $('#Nom').val()
+                },
+                success: function () {
+                    LoadCategories()
+                    Nom: $('#Nom').val('');
                 }
-
             });
         }
 
@@ -106,37 +172,13 @@
 
         }
 
+
         $(document).ready(function () {
+            LoadCategories();
             $('#Nom').focus();
+
         })
-
-        function Enregistrer() {
-            var tache = {
-                Nom: $('#Nom').val(),
-                CategoryID: $('#Categorie').val()
-            };
-
-            $.ajax({
-                type: 'POST',
-                url: '/api/categories',
-                data: tache,
-                dataType: 'json',
-                success: function () {
-
-                    window.location.href = '/index.html';
-                },
-                error: function () {
-                    alert('On va tous mourir !!!!')
-                }
-
-            })
-
-            return false;
-        }
-
-
-
-
+ 
     </script>
 </body>
 </html>
